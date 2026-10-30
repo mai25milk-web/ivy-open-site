@@ -10,13 +10,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
 <script>
-(function(d){if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-motion');try{if(sessionStorage.getItem('ivy-intro'))d.classList.add('intro-done')}catch(e){}setTimeout(function(){if(!window.ivyReady)d.classList.remove('js-motion')},2500)})(document.documentElement);
+(function(d){if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-motion');try{var n=performance.getEntriesByType('navigation')[0];if(sessionStorage.getItem('ivy-intro')&&!(n&&n.type==='reload'))d.classList.add('intro-done')}catch(e){}setTimeout(function(){if(!window.ivyReady)d.classList.remove('js-motion')},2500)})(document.documentElement);
 </script>
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=2" defer></script>
 </head>
 <body class="has-fixbar">
+<div class="curtain" aria-hidden="true"><p class="curtain__mark"><span class="curtain__sub">絵画・造形教室</span><span class="curtain__main">アイビーオープン</span></p></div>
 <header class="header">
   <a class="logo" href="./">
     <span class="logo__sub">絵画・造形教室</span>
@@ -60,6 +61,7 @@
       <svg class="fv__line fv__line--pc" viewBox="0 0 1440 560" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M652 560 C480 330 900 190 800 0"/></svg>
       <svg class="fv__line fv__line--sp" viewBox="0 0 375 400" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 247 C110 282 250 112 375 160"/></svg>
     </div>
+    <span class="fv__scroll" aria-hidden="true"></span>
     <svg class="arc arc--down" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 Q720 128 1440 0 V64 H0 Z" fill="#FFFFFF"/></svg>
     <p class="fv__card fv__card--a"><span class="fv__en" aria-hidden="true">PAINTING</span><span class="fv__ja">絵画</span><span class="fv__desc">絵の具や鉛筆で、絵を描く</span></p>
     <p class="fv__card fv__card--b"><span class="fv__en" aria-hidden="true">MAKING</span><span class="fv__ja">造形</span><span class="fv__desc">粘土や木で、形をつくる</span></p>
@@ -132,6 +134,8 @@
       </div>
     </div>
   </section>
+
+  <div class="loop" aria-hidden="true"><ul class="loop__track"><li><img src="assets/img/watercolor-hands.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/clay-materials.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/oil-canvas-easel.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/desk-brushes-clay.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/pencil-sketch.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/wood-board-sculpture.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/still-life.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/art-materials.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/watercolor-hands.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/clay-materials.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/oil-canvas-easel.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/desk-brushes-clay.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/pencil-sketch.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/wood-board-sculpture.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/still-life.webp" alt="" loading="lazy" decoding="async"></li><li><img src="assets/img/art-materials.webp" alt="" loading="lazy" decoding="async"></li></ul></div>
 
   <section class="section teacher" id="teacher">
     <div class="wrap teacher__grid">

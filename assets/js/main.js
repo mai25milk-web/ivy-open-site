@@ -36,6 +36,7 @@
   /* ---------- 開いたときの動きのスキップ ---------- */
   function finishIntro() {
     root.classList.add('intro-done');
+    try { sessionStorage.setItem('ivy-intro', '1'); } catch (e) { /* 保存できなくても動く */ }
     ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(function (t) {
       window.removeEventListener(t, finishIntro);
     });
@@ -44,10 +45,7 @@
     ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(function (t) {
       window.addEventListener(t, finishIntro, { passive: true });
     });
-    window.setTimeout(function () {
-      finishIntro();
-      try { sessionStorage.setItem('ivy-intro', '1'); } catch (e) { /* 保存できなくても動く */ }
-    }, 1400);
+    window.setTimeout(finishIntro, document.querySelector('.curtain') ? 3100 : 1400);
   }
 
   /* ---------- スクロールで出る動き ---------- */
@@ -68,9 +66,96 @@
 
     reveals.forEach(function (el) {
       /* 今の画面幅で表示していない要素（PC専用・スマホ専用）は待たない */
-      if (el.getClientRects().length === 0) el.classList.add('is-in');
+      if (el.getClientRects().length === 0 || el.classList.contains('reveal--draw')) el.classList.add('is-in');
       else io.observe(el);
     });
+  }
+
+  /* ---------- 絵画と造形、それぞれの側で写真がゆっくり切り替わる ---------- */
+  var fvPhoto = document.querySelector('.fv__photo');
+  if (fvPhoto && root.classList.contains('js-motion')) {
+    var isPc = window.matchMedia('(min-width: 768px)').matches;
+    var sets = isPc
+      ? [['watercolor-hands', 'clay-materials'], ['oil-canvas-easel', 'desk-brushes-clay']]
+      : [['oil-canvas-easel', 'desk-brushes-clay'], ['still-life', 'desk-pastels-paper']];
+    var line = fvPhoto.querySelector('.fv__line');
+    var slides = [[], []];
+    ['a', 'b'].forEach(function (name, side) {
+      var layer = document.createElement('div');
+      layer.className = 'fv__side fv__side--' + name;
+      layer.setAttribute('aria-hidden', 'true');
+      sets.forEach(function (set, i) {
+        var img = document.createElement('img');
+        img.className = 'fv__slide';
+        img.alt = '';
+        img.decoding = 'async';
+        img.src = 'assets/img/' + set[side] + '.webp';
+        layer.appendChild(img);
+        slides[side][i] = img;
+      });
+      fvPhoto.insertBefore(layer, line);
+    });
+
+    var step = 0; /* 0 は最初の写真（重ねない） */
+    function setSlide(i, on) {
+      slides[0][i].classList.toggle('is-on', on);
+      slides[1][i].classList.toggle('is-on', on);
+    }
+    window.setInterval(function () {
+      if (document.hidden || window.pageYOffset > fvPhoto.offsetHeight) return;
+      var prev = step;
+      step = (step + 1) % (sets.length + 1);
+      if (step > 0) setSlide(step - 1, true);
+      if (prev > 0) {
+        if (step === 0) setSlide(prev - 1, false);
+        else window.setTimeout(function () { setSlide(prev - 1, false); }, 3000);
+      }
+    }, 6000);
+  }
+
+  /* ---------- スクロールに合わせて動くもの ---------- */
+  if (root.classList.contains('js-motion')) {
+    var drifts = Array.prototype.slice.call(document.querySelectorAll('.ph:not(.ph--empty):not(.mapbox)'))
+      .filter(function (el) { return el.querySelector('img'); });
+    var draws = Array.prototype.slice.call(document.querySelectorAll('.reveal--draw'));
+    var ticking = false;
+
+    drifts.forEach(function (el) { el.classList.add('has-drift'); });
+
+    function onFrame() {
+      ticking = false;
+      var vh = window.innerHeight;
+
+      if (fvPhoto) {
+        var p = Math.min(window.pageYOffset / fvPhoto.offsetHeight, 1);
+        fvPhoto.style.transform = 'translateY(' + (p * fvPhoto.offsetHeight * .3) + 'px) scale(' + (1 + p * .08) + ')';
+        fvPhoto.style.opacity = 1 - p * .6;
+      }
+
+      drifts.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        var ratio = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+        el.style.setProperty('--drift', (-ratio * r.height * .06) + 'px');
+      });
+
+      draws.forEach(function (el) {
+        var box = el.parentNode.getBoundingClientRect();
+        var done = Math.max(0, Math.min(1, (vh * .85 - box.top) / (box.height + vh * .3)));
+        var path = el.querySelector('path');
+        if (path) path.style.strokeDashoffset = 1 - done;
+        var items = el.parentNode.querySelectorAll('li');
+        Array.prototype.forEach.call(items, function (li, i) {
+          li.classList.toggle('is-on', done >= i / items.length + .02);
+        });
+      });
+    }
+    function requestFrame() {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(onFrame); }
+    }
+    window.addEventListener('scroll', requestFrame, { passive: true });
+    window.addEventListener('resize', requestFrame);
+    onFrame();
   }
 
   /* ---------- スマホ固定ボタン：フォームが見えたら隠す ---------- */
