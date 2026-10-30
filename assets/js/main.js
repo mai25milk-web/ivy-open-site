@@ -146,7 +146,7 @@
         if (path) path.style.strokeDashoffset = 1 - done;
         var items = el.parentNode.querySelectorAll('li');
         Array.prototype.forEach.call(items, function (li, i) {
-          li.classList.toggle('is-on', done >= i / items.length + .02);
+          li.classList.toggle('is-on', done >= i / (items.length - 1) * .96 + .02);
         });
       });
     }
