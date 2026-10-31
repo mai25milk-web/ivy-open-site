@@ -243,3 +243,10 @@
 
   syncGrade();
 })();
+
+// Instagram の埋め込みは読み込み後に高さが変わるので、スクロール位置を計算し直す
+(function () {
+  var box = document.querySelector('.ig-embeds'), t;
+  if (!box || !window.ScrollTrigger || !window.ResizeObserver) return;
+  new ResizeObserver(function () { clearTimeout(t); t = setTimeout(function () { ScrollTrigger.refresh(); }, 200); }).observe(box);
+})();
