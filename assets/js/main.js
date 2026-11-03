@@ -158,13 +158,20 @@
     onFrame();
   }
 
-  /* ---------- スマホ固定ボタン：フォームが見えたら隠す ---------- */
+  /* ---------- スマホ固定ボタン：FVのボタンかフォームが見えている間は隠す ---------- */
   var fixbar = document.querySelector('.fixbar');
   var formArea = document.getElementById('apply');
+  var fvCta = document.querySelector('.hero .cta, .intro .cta');
   if (fixbar && formArea && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      fixbar.classList.toggle('is-hidden', entries[0].isIntersecting);
-    }).observe(formArea);
+    var seen = new Map();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { seen.set(e.target, e.isIntersecting); });
+      var any = false;
+      seen.forEach(function (v) { if (v) any = true; });
+      fixbar.classList.toggle('is-hidden', any);
+    });
+    io.observe(formArea);
+    if (fvCta) io.observe(fvCta);
   }
 
   /* ---------- 申込みフォーム ----------
