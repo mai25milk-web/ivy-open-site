@@ -978,7 +978,7 @@ textarea.input { height: 120px; padding: var(--s12) var(--s16); resize: vertical
   border-radius: 12px; background: #fff; border: 1px solid var(--color-line); text-align: center;
 }
 .mats__set--make .mat { background: var(--theme-pale); border-color: transparent; }
-.mat svg { width: 56px; height: 56px; color: var(--theme); fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.mat__il { width: 64px; height: 64px; object-fit: contain; }
 .mat__name { font-weight: 700; font-size: 15px; line-height: 24px; letter-spacing: .04em; white-space: nowrap; }
 .mats-note { margin-top: var(--s16); color: var(--color-text-sub); font-size: 14px; line-height: 24px; }
 .mats-block { margin-top: var(--s64); }
@@ -991,7 +991,7 @@ textarea.input { height: 120px; padding: var(--s12) var(--s16); resize: vertical
   .mats__list { gap: var(--s12); }
   .mats__set--draw .mats__list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .mat { padding: var(--s24) var(--s4); }
-  .mat svg { width: 64px; height: 64px; }
+  .mat__il { width: 80px; height: 80px; }
   .mat__name { font-size: 16px; }
   .mats-block { margin-top: var(--s96); }
   .mats-block .h3-sec { margin-bottom: var(--s32); }
